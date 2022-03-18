@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  ooni-probe:
+    build: .
+    #image: altertek/ooni-probe
+    container_name: "ooni-probe"
+    restart: unless-stopped
+    # Overrides the default command and runs the probe every 12 hours
+    command: >
+      bash -c "/usr/bin/ooniprobe run unattended --batch
+      && /bin/sleep 43200"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: 100m
