@@ -1,21 +1,34 @@
 # syntax=docker/dockerfile:1
 
-FROM debian:bullseye-slim
+FROM alpine:3.15 as builder
 
 LABEL org.opencontainers.image.source=https://github.com/altertek/docker-ooni-probe
 LABEL org.opencontainers.image.authors=Altertek
 
-ARG DEBIAN_FRONTEND=noninteractive
+ARG PROBEVERSION=v3.14.1
+ARG TARGETPLATFORM
+ENV TARGETPLATFORM=${TARGETPLATFORM:-"linux/amd64"}
 
-RUN apt-get update -y \
-    && apt-get install gnupg=2.2.27-2 --no-install-recommends -y \
-    && apt-key adv --verbose --keyserver hkp://keyserver.ubuntu.com --recv-keys 'B5A08F01796E7F521861B449372D1FF271F2DD50' \
-    && echo "deb http://deb.ooni.org/ unstable main" > /etc/apt/sources.list.d/ooniprobe.list \
-    && apt-get update -y \
-    && apt-get install ooniprobe-cli=3.14.1 --no-install-recommends -y \
-    && rm -rf /var/lib/apt/lists/* \
-    && /usr/bin/ooniprobe onboard --yes
+SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
-COPY ooniprobe.conf /etc/ooniprobe/ooniprobe.conf
+RUN apk add --no-cache wget \
+    && ARCH=$(echo $TARGETPLATFORM | tr / -) \
+    && wget -q --output-document=/root/probe.bin \
+	"https://github.com/ooni/probe-cli/releases/download/$PROBEVERSION/ooniprobe-$ARCH" \
+    && chmod +x /root/probe.bin
+
+FROM alpine:3.15
+
+ARG USER=default
+ENV HOME /home/$USER
+
+COPY --from=builder /root/probe.bin /usr/bin/ooniprobe
+
+RUN adduser -D -g $USER $USER \
+    && su $USER -c "/usr/bin/ooniprobe onboard --yes" \
+    && chmod -R 777 "$HOME/.ooniprobe"
+
+USER $USER
+WORKDIR $HOME
 
 CMD ["/usr/bin/ooniprobe", "run", "unattended", "--batch"]
