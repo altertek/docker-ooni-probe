@@ -8,7 +8,7 @@ services:
     restart: unless-stopped
     # Overrides the default command and runs the probe every 12 hours
     command: >
-      bash -c "/usr/bin/ooniprobe run unattended --batch
+      sh -c "/usr/bin/ooniprobe run unattended --batch
       && /bin/sleep 43200"
     logging:
       driver: "json-file"
