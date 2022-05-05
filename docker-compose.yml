@@ -2,8 +2,8 @@ version: "3"
 
 services:
   ooni-probe:
-    build: .
-    #image: altertek/ooni-probe
+    # build: .
+    image: altertek/ooni-probe
     container_name: "ooni-probe"
     restart: unless-stopped
     # Overrides the default command and runs the probe every 12 hours
