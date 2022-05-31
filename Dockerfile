@@ -25,10 +25,11 @@ ENV HOME /home/$USER
 COPY --from=builder /root/probe.bin /usr/bin/ooniprobe
 
 RUN adduser -D -g $USER $USER \
-    && su $USER -c "/usr/bin/ooniprobe onboard --yes" \
-    && chmod -R 777 "$HOME/.ooniprobe"
+    && chown -R $USER:$USER $HOME
 
 USER $USER
 WORKDIR $HOME
+
+RUN /usr/bin/ooniprobe onboard --yes
 
 CMD ["/usr/bin/ooniprobe", "run", "unattended", "--batch"]
