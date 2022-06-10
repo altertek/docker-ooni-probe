@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM alpine:3.15 as builder
+FROM alpine:3.16 as builder
 
 LABEL org.opencontainers.image.source=https://github.com/altertek/docker-ooni-probe
 LABEL org.opencontainers.image.authors=Altertek
@@ -17,7 +17,7 @@ RUN apk add --no-cache wget \
 	"https://github.com/ooni/probe-cli/releases/download/$PROBEVERSION/ooniprobe-$ARCH" \
     && chmod +x /root/probe.bin
 
-FROM alpine:3.15
+FROM alpine:3.16
 
 ARG USER=default
 ENV HOME /home/$USER
@@ -25,10 +25,11 @@ ENV HOME /home/$USER
 COPY --from=builder /root/probe.bin /usr/bin/ooniprobe
 
 RUN adduser -D -g $USER $USER \
-    && su $USER -c "/usr/bin/ooniprobe onboard --yes" \
-    && chmod -R 777 "$HOME/.ooniprobe"
+    && chown -R $USER:$USER $HOME
 
 USER $USER
 WORKDIR $HOME
+
+RUN /usr/bin/ooniprobe onboard --yes
 
 CMD ["/usr/bin/ooniprobe", "run", "unattended", "--batch"]
