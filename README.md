@@ -33,12 +33,7 @@ This is the default startup command this container runs if none is specified:
 The image is designed to be as minimalistic as possible (around 50 MB, we use alpine as base image)
 
 ### Security
-The container is rootless by default and support any user
-```
-docker run --rm -it --user $((RANDOM+1)) altertek/ooni-probe /usr/bin/ooniprobe geoip
-```
-
-
+The container is rootless by default
 
 ## Contributing
 Please see https://github.com/altertek/.github/blob/main/CONTRIBUTING.md
