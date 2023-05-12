@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM alpine:3.17 as builder
+FROM alpine:3.18 as builder
 
 LABEL org.opencontainers.image.source=https://github.com/altertek/docker-ooni-probe
 LABEL org.opencontainers.image.authors=Altertek
@@ -17,7 +17,7 @@ RUN apk add --no-cache wget \
 	"https://github.com/ooni/probe-cli/releases/download/$PROBEVERSION/ooniprobe-$ARCH" \
     && chmod +x /root/probe.bin
 
-FROM alpine:3.17
+FROM alpine:3.18
 
 ARG USER=default
 ENV HOME /home/$USER
