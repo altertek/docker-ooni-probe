@@ -27,7 +27,7 @@ This is the default startup command this container runs if none is specified:
 ```
 /usr/bin/ooniprobe run unattended --batch
 ```
-`--batch` outputs results in JSON format, easer to parse if you have any log collector
+`--batch` outputs results in JSON format, easier to parse if you have any log collector
 
 ### Light
 The image is designed to be as minimalistic as possible (around 50 MB, we use alpine as base image)
