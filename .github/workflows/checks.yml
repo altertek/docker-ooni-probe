@@ -16,7 +16,7 @@ jobs:
 
     steps:
 
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Run hadolint action
       uses: hadolint/hadolint-action@v3.1.0
