@@ -4,8 +4,17 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
-      
+    groups:
+       # name which will be used in PR titles and branch names
+       github-actions:
+          patterns:
+            - "*"
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "monthly"
+    groups:
+       # name which will be used in PR titles and branch names
+       docker:
+          patterns:
+            - "*"
