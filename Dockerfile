@@ -5,7 +5,7 @@ FROM alpine:3.19 as builder
 LABEL org.opencontainers.image.source=https://github.com/altertek/docker-ooni-probe
 LABEL org.opencontainers.image.authors=Altertek
 
-ARG PROBEVERSION=v3.19.0
+ARG PROBEVERSION=v3.20.1
 ARG TARGETPLATFORM
 ENV TARGETPLATFORM=${TARGETPLATFORM:-"linux/amd64"}
 
