@@ -1,11 +1,12 @@
 # syntax=docker/dockerfile:1
 
-FROM alpine:3.21 as builder
+FROM alpine:3.21 AS builder
+
 
 LABEL org.opencontainers.image.source=https://github.com/altertek/docker-ooni-probe
 LABEL org.opencontainers.image.authors=Altertek
 
-ARG PROBEVERSION=v3.23.0
+ARG PROBEVERSION=v3.24.0
 ARG TARGETPLATFORM
 ENV TARGETPLATFORM=${TARGETPLATFORM:-"linux/amd64"}
 
@@ -20,7 +21,7 @@ RUN apk add --no-cache wget \
 FROM alpine:3.21
 
 ARG USER=default
-ENV HOME /home/$USER
+ENV HOME=/home/$USER
 
 COPY --from=builder /root/probe.bin /usr/bin/ooniprobe
 
