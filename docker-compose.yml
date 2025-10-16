@@ -4,10 +4,10 @@ services:
     image: altertek/ooni-probe
     container_name: "ooni-probe"
     restart: unless-stopped
-    # Overrides the default command and runs the probe every 12 hours
+    # Overrides the default command and runs the probe every 10 to 12 hours
     command: >
       sh -c "/usr/bin/ooniprobe run unattended --batch
-      && /bin/sleep 43200"
+      && /bin/sleep $(shuf -i 36000-42000 -n 1)"
     logging:
       driver: "json-file"
       options:
